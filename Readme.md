@@ -23,6 +23,7 @@ docker-embark path/to/dockerfile
 ```bash
 docker-embark [PATH_TO_DOCKERFILE]...
 
+  -h, --help 			Print this help
   -k, --keep-images 		Keep images instead of deleting it after push
   -b, --build-only 		Do not push image after building it
 ```

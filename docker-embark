@@ -2,6 +2,20 @@
 
 set -euo pipefail
 
+get_usage () {
+	cat << EOF
+Usage: docker-embark [PATH_TO_DOCKERFILE]...
+Build, ship and delete Docker images
+
+  -k, --keep-images             Keep images instead of deleting it after push
+  -b, --build-only              Do not push image after building it
+
+EOF
+
+exit 0
+
+}
+
 docker_embark () {
 	if [ ! -f $1/Dockerfile ]; then
 	    echo "[ERROR] Dockerfile not found"
@@ -67,6 +81,9 @@ case $key in
     -b|--build-only)
     BUILDONLY=1
     shift 
+    ;;
+    -h|--help)
+    get_usage
     ;;
     *)    
     POSITIONAL+=("$1") # save it in an array for later
