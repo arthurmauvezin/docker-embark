@@ -33,7 +33,11 @@ docker_embark () {
 		do
 			echo $repository:$tag
 			docker build -f $1/Dockerfile -t $repository:$tag $1
-			docker push $repository:$tag
+
+			if [[ "$3" -eq 0 ]]
+			then
+				docker push $repository:$tag
+			fi
 			builded_images+=($repository:$tag)
 		done
 	done
@@ -48,18 +52,41 @@ docker_embark () {
 	fi
 }
 
-keep=0
+KEEPIMAGES=0
+BUILDONLY=0
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
 
-if [[ "${@: -1}" == "--keep-images" ]]
-then
-	keep=1
-	set -- "${@:1:$(($#-1))}"
+case $key in
+    -k|--keep-images)
+    KEEPIMAGES=1
+    shift 
+    ;;
+    -b|--build-only)
+    BUILDONLY=1
+    shift 
+    ;;
+    *)    
+    POSITIONAL+=("$1") # save it in an array for later
+    shift 
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+echo KEEP IMAGES  = "${KEEPIMAGES}"
+echo BUILD ONLY     = "${BUILDONLY}"
+
+if [[ -z $1 ]]; then
+    echo "[ERROR] Missing path_to_dockerfile parameter"
+    exit 1
 fi
-
 
 while [[ $# -gt 0 ]]
 do
-	docker_embark $1 $keep
+	docker_embark $1 $KEEPIMAGES $BUILDONLY
 	shift
 done
 

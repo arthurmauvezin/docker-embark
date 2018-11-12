@@ -3,16 +3,28 @@
 This bash script build and push many images from Dockerfile implementing specified tags.
 After building and pushing, the script delete pushed images.
 
-## Usage
+## Example
 To use this script, you need to add to commented lines to your Dockerfile as following
 ```dockerfile
 #REPOSITORIES=repository-first,my-personal-repo
 #TAGS=1,1.2,1.2.0,1.2.0-alpine
 ```
 
-Then, execute the following line
+Then, execute the following line :
+```bash
+docker-embark .
+```
+or : 
+```bash
+docker-embark path/to/dockerfile
+```
+
+## Usage
 ```bash
 docker-embark [PATH_TO_DOCKERFILE]...
+
+  -k, --keep-images 		Keep images instead of deleting it after push
+  -b, --build-only 		Do not push image after building it
 ```
 
 This will build and push then delete 8 images named:
@@ -33,11 +45,3 @@ cd docker-embark
 chmod +x install.sh
 ./install.sh
 ```
-
-## Example
-Type:
-```bash
-docker-embark .
-docker-embark path/to/dockerfile
-```
-
