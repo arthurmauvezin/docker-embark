@@ -7,6 +7,7 @@ get_usage () {
 Usage: docker-embark [PATH_TO_DOCKERFILE]...
 Build, ship and delete Docker images
 
+  -h, --help 			Print this help
   -k, --keep-images             Keep images instead of deleting it after push
   -b, --build-only              Do not push image after building it
 
