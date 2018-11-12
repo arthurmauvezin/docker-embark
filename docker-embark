@@ -97,7 +97,7 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 echo KEEP IMAGES  = "${KEEPIMAGES}"
 echo BUILD ONLY     = "${BUILDONLY}"
 
-if [[ -z $1 ]]; then
+if [[ $# -eq 0 ]]; then
     echo "[ERROR] Missing path_to_dockerfile parameter"
     exit 1
 fi
