@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -euo pipefail
+
+docker_embark () {
+	if [ ! -f $1/Dockerfile ]; then
+	    echo "[ERROR] Dockerfile not found"
+	    exit 1
+	fi
+
+	repository_line=$(grep REPOSITORIES $1/Dockerfile)
+	repositories=${repository_line### REPOSITORIES=}
+
+	tag_line=$(grep TAGS $1/Dockerfile)
+	tags=${tag_line### TAGS=}
+
+	if [[ ( -z "$repositories" ) ]]
+	then
+		echo "[ERROR] No REPOSITORIES tag found in Dockerfile"
+		exit 1
+	fi
+
+	if [[ ( -z "$tags" ) ]]
+	then
+		echo "[ERROR] No TAGS tag found in Dockerfile"
+		exit 1
+	fi
+
+	builded_images=()
+	for repository in $(echo $repositories | tr "," "\n")
+	do
+		for tag in $(echo $tags | tr "," "\n")
+		do
+			echo $repository:$tag
+			docker build -f $1/Dockerfile -t $repository:$tag $1
+			docker push $repository:$tag
+			builded_images+=($repository:$tag)
+		done
+	done
+
+	if [[ "$2" -eq 0 ]]
+        then
+		for image in ${builded_images[@]}
+		do
+			echo $image
+			docker rmi $image
+		done
+	fi
+}
+
+keep=0
+
+if [[ "${@: -1}" == "--keep-images" ]]
+then
+	keep=1
+	set -- "${@:1:$(($#-1))}"
+fi
+
+
+while [[ $# -gt 0 ]]
+do
+	docker_embark $1 $keep
+	shift
+done
+
