@@ -9,10 +9,10 @@ docker_embark () {
 	fi
 
 	repository_line=$(grep REPOSITORIES $1/Dockerfile)
-	repositories=${repository_line### REPOSITORIES=}
+	repositories=${repository_line###REPOSITORIES=}
 
 	tag_line=$(grep TAGS $1/Dockerfile)
-	tags=${tag_line### TAGS=}
+	tags=${tag_line###TAGS=}
 
 	if [[ ( -z "$repositories" ) ]]
 	then

@@ -6,8 +6,8 @@ After building and pushing, the script delete pushed images.
 ## Usage
 To use this script, you need to add to commented lines to your Dockerfile as following
 ```dockerfile
-# REPOSITORIES=repository-first,my-personal-repo
-# TAGS=1,1.2,1.2.0,1.2.0-alpine
+#REPOSITORIES=repository-first,my-personal-repo
+#TAGS=1,1.2,1.2.0,1.2.0-alpine
 ```
 
 Then, execute the following line
