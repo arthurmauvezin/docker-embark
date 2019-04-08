@@ -65,6 +65,7 @@ docker_embark () {
 			docker rmi $image
 		done
 	fi
+	echo "${builded_images[0]}" | xclip -selection c
 }
 
 KEEPIMAGES=0
